@@ -1,0 +1,2 @@
+SECRET_KEY = 'OUR-SECRET'
+DEBUG = True
