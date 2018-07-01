@@ -17,4 +17,4 @@ class Author(db.Model):
     
     # How to display
     def __repr__(self):
-        return f'Author {self.username}'
+        return f'Author {self.fullname}'

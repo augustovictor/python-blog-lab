@@ -6,6 +6,7 @@ cryptography==2.2.2
 Flask==1.0.2
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.3.2
+Flask-WTF==0.14.2
 idna==2.7
 isort==4.3.4
 itsdangerous==0.24
@@ -20,3 +21,4 @@ six==1.11.0
 SQLAlchemy==1.2.9
 Werkzeug==0.14.1
 wrapt==1.10.11
+WTForms==2.2.1
