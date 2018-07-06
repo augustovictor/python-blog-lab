@@ -15,3 +15,14 @@ class RegisterForm(Form):
         validators.EqualTo('confirm', message='Passwords do not match')
     ])
     confirm = PasswordField('Repeat password')
+
+class LoginForm(Form):
+    username = StringField('Username', [
+        validators.DataRequired(),
+        validators.Length(min=4, max=25)
+    ])
+
+    password = PasswordField('Password', [
+        validators.DataRequired(),
+        validators.Length(min=4, max=25)
+    ])
