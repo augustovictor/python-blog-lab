@@ -3,14 +3,14 @@ from wtforms import validators, StringField, PasswordField
 from wtforms.fields.html5 import EmailField
     
 class RegisterForm(Form):
-    fullname = StringField('Name', [validators.Required()])
-    email = EmailField('Email', [validators.Required()])
+    fullname = StringField('Name', [validators.DataRequired()])
+    email = EmailField('Email', [validators.DataRequired()])
     username = StringField('Username', [
-        validators.Required(),
+        validators.DataRequired(),
         validators.Length(min=4, max=25)
     ])
     password = PasswordField('New password', [
-        validators.Required(),
+        validators.DataRequired(),
         validators.Length(min=3,max=80),
         validators.EqualTo('confirm', message='Passwords do not match')
     ])

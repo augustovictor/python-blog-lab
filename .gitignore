@@ -113,3 +113,6 @@ data.db
 
 # External project
 tasks_proj/
+
+# Pycharm
+.idea
