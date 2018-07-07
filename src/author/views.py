@@ -1,18 +1,26 @@
 from src import app
-from flask import render_template, redirect, url_for, session
+from flask import render_template, redirect, url_for, session, request
 from .form import RegisterForm, LoginForm
 from .models import Author
+from .decorators import login_required
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     error = None
 
+    if request.method == 'GET' and request.args.get('next'):
+        session['next'] = request.args.get('next', None)
+
     if form.validate_on_submit():
         author = Author.query.filter_by(username=form.username.data, password=form.password.data).limit(1)
         if author.count():
             session['username'] = form.username.data
-            return redirect(url_for('login_success'))
+            if 'next' in session:
+                next = session.get('next')
+                session.pop('next')
+                return redirect(next)
+            return 'Logged in without next in session'
     return render_template('author/login.html', form=form, error=error)
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -27,5 +35,6 @@ def success():
     return 'Registered successfully!'
 
 @app.route('/login-success')
+@login_required
 def login_success():
     return 'Logged in successfully!'
