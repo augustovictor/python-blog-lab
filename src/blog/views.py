@@ -4,6 +4,7 @@ from .form import SetupForm
 from .models import Blog
 from src.author.models import Author
 from src import db
+import bcrypt
 
 @app.route('/')
 @app.route('/index')
@@ -26,11 +27,13 @@ def setup():
     error = None
     form = SetupForm()
     if form.validate_on_submit():
+        salt = bcrypt.gensalt()
+        hash_password = bcrypt.hashpw(form.password.data, salt)
         author = Author(
             form.fullname.data,
             form.email.data,
             form.username.data,
-            form.password.data,
+            hash_password,
             True
         )
 

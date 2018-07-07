@@ -3,6 +3,12 @@ from flask import render_template, redirect, url_for, session, request
 from .form import RegisterForm, LoginForm
 from .models import Author
 from .decorators import login_required
+import bcrypt
+
+@app.route('/logout')
+def logout():
+    session.pop('username')
+    return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -13,8 +19,9 @@ def login():
         session['next'] = request.args.get('next', None)
 
     if form.validate_on_submit():
-        author = Author.query.filter_by(username=form.username.data, password=form.password.data).limit(1)
-        if author.count():
+        authors = Author.query.filter_by(username=form.username.data).limit(1)
+
+        if authors.count() and bcrypt.hashpw(form.password.data, authors[0].password) == authors[0].password:
             session['username'] = form.username.data
             if 'next' in session:
                 next = session.get('next')
