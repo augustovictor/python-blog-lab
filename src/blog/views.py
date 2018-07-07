@@ -108,3 +108,18 @@ def article():
 def get_article(slug):
     post = Post.query.filter_by(slug=slug).first_or_404()
     return render_template('blog/article.html', post=post)
+
+@app.route('/delete/<int:post_id>')
+@author_required
+def delete_post(post_id):
+    post = Post.query.filter_by(id=post_id).first_or_404()
+    post.is_published = False
+    db.session.commit()
+    return redirect('admin')
+
+@app.route('/edit/<int:post_id>')
+@author_required
+def edit_post(post_id):
+    post = Post.query.filter_by(id=post_id).first_or_404()
+    form = PostForm(obj=post)
+    return render_template('blog/post.html', form=form, post=post, action='edit')

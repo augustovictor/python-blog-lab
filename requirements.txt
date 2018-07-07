@@ -9,6 +9,7 @@ Flask-Markdown==0.3
 Flask-Migrate==2.2.1
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.3.2
+-e git+https://github.com/fromzeroedu/flask_uploads@bda5ddf574b7ac3ced373c8d6712cabe64ce7e6a#egg=flask_uploads
 Flask-WTF==0.14.2
 idna==2.7
 isort==4.3.4
