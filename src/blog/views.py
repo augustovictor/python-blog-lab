@@ -98,7 +98,7 @@ def post():
         db.session.add(post)
         db.session.commit()
         return redirect((url_for('admin')))
-    return render_template('blog/post.html', form=form)
+    return render_template('blog/post.html', form=form, action='new')
 
 @app.route('/article')
 def article():
@@ -117,9 +117,20 @@ def delete_post(post_id):
     db.session.commit()
     return redirect('admin')
 
-@app.route('/edit/<int:post_id>')
+@app.route('/edit/<int:post_id>', methods=['GET', 'POST'])
 @author_required
 def edit_post(post_id):
     post = Post.query.filter_by(id=post_id).first_or_404()
     form = PostForm(obj=post)
+
+    if form.validate_on_submit():
+        form.populate_obj(post)
+
+        if form.new_category.data:
+            new_category = Category(form.new_category.data)
+            db.session.flush()
+            post.category = new_category
+        db.session.commit()
+        return redirect(url_for('get_article', slug=post.slug))
+
     return render_template('blog/post.html', form=form, post=post, action='edit')
