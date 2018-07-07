@@ -21,7 +21,8 @@ def new_author():
 @author_required
 def admin():
     if session.get('is_author'):
-        return render_template('blog/admin.html')
+        posts = Post.query.order_by(Post.created_at.desc())
+        return render_template('blog/admin.html', posts=posts)
     return abort(403)
 
 @app.route('/setup', methods=['GET', 'POST'])

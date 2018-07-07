@@ -8,6 +8,7 @@ import bcrypt
 @app.route('/logout')
 def logout():
     session.pop('username')
+    session.pop('is_author')
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
