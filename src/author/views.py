@@ -21,6 +21,8 @@ def login():
                 session.pop('next')
                 return redirect(next)
             return 'Logged in without next in session'
+        else:
+            error = 'Invalid credentials'
     return render_template('author/login.html', form=form, error=error)
 
 @app.route('/signup', methods=['GET', 'POST'])
