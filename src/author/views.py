@@ -19,10 +19,11 @@ def login():
         session['next'] = request.args.get('next', None)
 
     if form.validate_on_submit():
-        authors = Author.query.filter_by(username=form.username.data).limit(1)
+        author = Author.query.filter_by(username=form.username.data).first()
 
-        if authors.count() and bcrypt.hashpw(form.password.data, authors[0].password) == authors[0].password:
+        if author and bcrypt.hashpw(form.password.data, author.password) == author.password:
             session['username'] = form.username.data
+            session['is_author'] = author.is_author
             if 'next' in session:
                 next = session.get('next')
                 session.pop('next')

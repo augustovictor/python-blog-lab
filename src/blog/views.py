@@ -1,10 +1,11 @@
 from src import app
-from flask import render_template, redirect, url_for, flash
-from .form import SetupForm
+from flask import render_template, redirect, url_for, flash, session, abort
+from .form import SetupForm, PostForm
 from .models import Blog
 from src.author.models import Author
 from src import db
 import bcrypt
+from src.author.decorators import login_required, author_required
 
 @app.route('/')
 @app.route('/index')
@@ -16,11 +17,11 @@ def new_author():
     return render_template('blog/admin.html')
 
 @app.route('/admin')
+@author_required
 def admin():
-    blogs = Blog.query.count()
-    if blogs == 0:
-        return redirect(url_for('setup'))
-    return render_template('blog/admin.html')
+    if session.get('is_author'):
+        return render_template('blog/admin.html')
+    return abort(403)
 
 @app.route('/setup', methods=['GET', 'POST'])
 def setup():
@@ -61,3 +62,13 @@ def setup():
         
 
     return render_template('blog/setup.html', form=form, error=error)
+
+@app.route('/posts', methods=['GET', 'POST'])
+@author_required
+def post():
+    form = PostForm()
+    return render_template('blog/post.html', form=form)
+
+@app.route('/article')
+def article():
+    return render_template('blog/article.html')
