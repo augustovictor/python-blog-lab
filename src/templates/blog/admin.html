@@ -14,7 +14,7 @@
     {% if posts %}
         <div class="row">
             <ul>
-                {% for post in posts %}
+                {% for post in posts.items %}
                     <li>
                         <a href="{{ url_for('get_article', slug=post.slug) }}">{{ post.title }}</a>
                       - by {{ post.author.fullname }} at {{ post.created_at.strftime('%Y-%m-%d') }}
@@ -23,6 +23,20 @@
                 {% endfor %}
 
             </ul>
+        </div>
+        <div class="row">
+            <div class="post-paginate">
+                {% if posts.has_prev %}
+                    <a href="{{ url_for('index', page=posts.prev_num) }}">&lt;&lt; Previous page</a>
+                {% else %}
+                    &lt;&lt; Previous page
+                {% endif %} |
+                {% if posts.has_next %}
+                    <a href="{{ url_for('index', page=posts.next_num) }}">Next page &gt;&gt;</a>
+                {% else %}
+                    Next page &gt;&gt;
+                {% endif %}
+            </div>
         </div>
     {% endif %}
 

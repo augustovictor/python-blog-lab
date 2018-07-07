@@ -8,14 +8,20 @@ import bcrypt
 from slugify import slugify
 from src.author.decorators import author_required
 
-@app.route('/')
-@app.route('/index')
-def index():
-    return 'Hey you!'
+POSTS_PER_PAGE = 3
 
 @app.route('/author')
 def new_author():
     return render_template('blog/admin.html')
+
+@app.route('/')
+@app.route('/index')
+@app.route('/index/<int:page>')
+def index(page=1):
+    # True returns 404 for not existent pages
+    # False returns empty list
+    posts = Post.query.order_by(Post.created_at.desc()).paginate(page, POSTS_PER_PAGE, False)
+    return render_template('blog/admin.html', posts=posts)
 
 @app.route('/admin')
 @author_required
