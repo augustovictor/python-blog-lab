@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Blog post{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-    {% filter markdown %}
-        # Our custom markdown
-    {% endfilter %}
+    <h3>{{ post.title }}</h3>
+    <h5>Content</h5>
+    <p>{{ post.body }}</p>
+    <p>Author: {{ post.author.username }}</p>
+    <pre>{{ post.created_at.strftime('%Y-%m-%d') }} - Cateogry: {{ post.category.title }}</pre>
 {% endblock %}

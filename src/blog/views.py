@@ -96,3 +96,8 @@ def post():
 @app.route('/article')
 def article():
     return render_template('blog/article.html')
+
+@app.route('/article/<slug>')
+def get_article(slug):
+    post = Post.query.filter_by(slug=slug).first_or_404()
+    return render_template('blog/article.html', post=post)

@@ -26,6 +26,8 @@ class Post(db.Model):
     is_published = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime)
 
+    category = db.relationship('Category', backref=db.backref('posts', lazy='dynamic'))
+
     def __init__(self, blog, author, category, title, body, slug=None, is_published=False, created_at=None):
         self.blog_id = blog.id
         self.author_id = author.id
